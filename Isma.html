@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inventory Management</title>
+    
+  
+
+</head>
+    
+  <link rel="stylesheet" href="isma.css">
+
+    <body>
+        
+        <header>
+            <h1>Inventory Management</h1>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="D:/school/Webtest/Test/BAGO/Isma.html">Manage Item</a></li>
+                <li><a href="D:/school/Webtest/Test/BAGO/IsmaDV.html">View Inventory</a></li>
+            </ul>
+        </nav>
+        
+  <main>
+      <div class="add-modal modal-wrapper"></div>         
+      <div class="modal"></div>         
+      <div class="modal-header"><h2>Add New Product</h2></div>         
+      <div class="modal-body"></div>         
+                    <form>
+                        
+                         Barcode <input id="barcodebx" type="number"><br><br>
+                         Categories <input id="categoriesbx" type="text"><br><br>
+                         Item Name <input id="itemnamebx" type="text"><br><br>
+                         Price <input id="pricebx" type="number"><br><br>
+                         Quantity <input id="quantitybx" type="number"><br><br>
+                        <button id="insert" onclick="notifySuccess()">INSERT</button>
+                        <button id="select">SELECT</button>
+                        <button id="update"
+                        onclick="notifyInfo()">UPDATE</button>
+                        <button id="delete"
+                        onclick="notifyError()">DELETE</button>
+                          <div id="notification-area"></div>
+                    </form>
+  </main>
+  <footer>
+    <p>Copyright 2022</p>
+  </footer>
+    
+    
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+        
+        <script id="MainScript">
+            const firebaseConfig = {
+                apiKey: "AIzaSyD17Nzbny1SrGmdTa7w5Fk_DHk1GXHdR-o",
+                authDomain: "test1-34be5.firebaseapp.com",
+                databaseURL: "https://test1-34be5-default-rtdb.firebaseio.com",
+                projectId: "test1-34be5",
+                storageBucket: "test1-34be5.appspot.com",
+                messagingSenderId: "593650582699",
+                appId: "1:593650582699:web:e330c6e5f92b6e0d1a63ee",
+                measurementId: "G-PT5Y4K5DHH"
+            };
+            
+                firebase.initializeApp(firebaseConfig);
+//-------------------------Data------------------------------------------------//
+            var brcV, catV, inV, prV, qntV;
+            
+            function Ready(){
+                brcV = document.getElementById('barcodebx').value;
+                catV = document.getElementById('categoriesbx').value;
+                inV = document.getElementById('itemnamebx').value;
+                prV = document.getElementById('pricebx').value;
+                qntV = document.getElementById('quantitybx').value;
+            }
+//-------------------------INSERT Function------------------------------------------------//
+           document.getElementById('insert').onclick = function(){
+               Ready();
+               firebase.database().ref('ItemList/'+brcV).set({
+                   Barcode: brcV,
+                   Categories: catV,
+                   ItemName: inV,
+                   Price: prV,
+                   Quantity: qntV
+               });
+           } 
+//-------------------------Select Function------------------------------------------------//
+           document.getElementById('select').onclick = function(){
+               Ready();
+               firebase.database().ref('ItemList/'+brcV).on('value', function(snapshot){
+                    document.getElementById('categoriesbx').value= snapshot.val().Categories;
+                    document.getElementById('itemnamebx').value= snapshot.val().ItemName;
+                    document.getElementById('pricebx').value= snapshot.val().Price;
+                    document.getElementById('quantitybx').value= snapshot.val().Quantity;
+               });
+           } 
+//-------------------------Update Function------------------------------------------------//
+           document.getElementById('update').onclick = function(){
+               Ready();
+               firebase.database().ref('ItemList/'+brcV).update({
+                   Categories: catV,
+                   ItemName: inV,
+                   Price: prV,
+                   Quantity: qntV
+               });
+           } 
+//-------------------------Delete Function------------------------------------------------//
+           document.getElementById('delete').onclick = function(){
+               Ready();
+               firebase.database().ref('ItemList/'+brcV).remove();
+           } 
+//-------------------------Notification------------------------------------------------//
+ function notify(type,message){
+  (()=>{
+    let n = document.createElement("div");
+    let id = Math.random().toString(36).substr(2,10);
+    n.setAttribute("id",id);
+    n.classList.add("notification",type);
+    n.innerText = message;
+    document.getElementById("notification-area").appendChild(n);
+    setTimeout(()=>{
+      var notifications = document.getElementById("notification-area").getElementsByClassName("notification");
+      for(let i=0;i<notifications.length;i++){
+        if(notifications[i].getAttribute("id") == id){
+          notifications[i].remove();
+          break;
+        }
+      }
+    },5000);
+  })();
+}
+
+function notifySuccess(){
+  notify("success","✅ Item added Successfuly!");
+}
+function notifyError(){
+  notify("error","❌ Item Deleted Successfuly!");
+}
+function notifyInfo(){
+  notify("info","ℹ Item Updated Successfuly!");
+}
+
+
+        </script>
+</body>
+    
+</html>

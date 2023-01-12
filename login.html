@@ -1,0 +1,38 @@
+<!-- login.html -->
+<html>
+<head>
+  <title>LOGIN</title>
+  <link rel="stylesheet" href="login.css">
+  <!-- Add Firebase library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+        
+        <script id="MainScript">
+            const firebaseConfig = {
+                apiKey: "AIzaSyD17Nzbny1SrGmdTa7w5Fk_DHk1GXHdR-o",
+                authDomain: "test1-34be5.firebaseapp.com",
+                databaseURL: "https://test1-34be5-default-rtdb.firebaseio.com",
+                projectId: "test1-34be5",
+                storageBucket: "test1-34be5.appspot.com",
+                messagingSenderId: "593650582699",
+                appId: "1:593650582699:web:e330c6e5f92b6e0d1a63ee",
+                measurementId: "G-PT5Y4K5DHH"
+            };
+            
+                firebase.initializeApp(firebaseConfig);
+              </script>
+</head>
+<body>
+  <!-- Registration form -->
+  <form id="login-form">
+    <h2>Sign In</h2>
+    <input type="email" id="login-email" placeholder="Email">
+    <input type="password" id="login-password" placeholder="Password">
+    <button type="submit">Login</button>
+    <a href="http://127.0.0.1:5500/register.html">Register</a>
+    <div id="login-error" class="error"></div>
+  </form>
+
+  <!-- Add JavaScript file -->
+  <script src="login.js"></script>
+</body>
+</html>
